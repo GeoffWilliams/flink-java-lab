@@ -36,6 +36,12 @@ public class KafkaConsumer {
                 .build();
 
 
+
+        // Tweak/fine tune operators? yes!
+        // https://nightlies.apache.org/flink/flink-docs-release-1.18/docs/deployment/finegrained_resource/
+        //
+        // Im just not going there(!) Let flink do its thing until you have good reason to fiddle
+        // Status: MVP (Nov 2023/Flink 1.18)
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         env.fromSource(demoSource, WatermarkStrategy.noWatermarks(), "demoSource")
