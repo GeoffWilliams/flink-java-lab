@@ -98,7 +98,7 @@ public class KafkaKafkaJoinJob {
                 });
 
 
-        enrichedStream.map(snipe -> String.format("SNIPED via windowed join!" + snipe.toString()))
+        enrichedStream.map(snipe -> String.format("SNIPED via windowed join! " + snipe.toString()))
                 .print();
 
         env.execute("KafkaKafkaJoinJob");

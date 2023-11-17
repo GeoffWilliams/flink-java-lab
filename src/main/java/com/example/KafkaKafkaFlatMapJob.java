@@ -78,7 +78,7 @@ public class KafkaKafkaFlatMapJob {
                         .keyBy(ClickStreamEvent::getUserid, User::getUserid)
                         .flatMap(new SnipeEnricher());
 
-        enrichedStream.map(snipe -> String.format("SNIPED via FlatMap!" + snipe.toString()))
+        enrichedStream.map(snipe -> String.format("SNIPED via FlatMap! " + snipe.toString()))
             .print();
 
         env.execute("KafkaKafkaFlatMapJob");
