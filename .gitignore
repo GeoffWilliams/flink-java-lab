@@ -2,3 +2,4 @@ flink*
 .idea
 target
 dependency-reduced-pom.xml
+src/main/resources/*.properties

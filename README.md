@@ -55,6 +55,7 @@ The lab compiles a jar with a single main class. Each example Job is its own cla
 # Pick one or edit your own
 mvn clean package -DmainFlinkClass=com.example.NotAJob
 mvn clean package -DmainFlinkClass=com.example.HelloWorldJob
+mvn clean package -DmainFlinkClass=com.example.KafkaConsumer
 ```
 
 Argument `mainFlinkClass` sets the `main` class in the maven build at compile time and therefore the produced jar manifest.
@@ -64,6 +65,18 @@ Argument `mainFlinkClass` sets the `main` class in the maven build at compile ti
 ```shell
 ./flink*/bin/flink run target/flink-java-lab-0.1.jar
 ```
+
+## Wheres my output?
+
+look in `./flink*/logs`, you will see two files for each job:
+1. Captured `STDOUT`: `*.out`
+2. Logs from the job itself: `*.log`
+
+Inspect the files with `cat` or text editor.
+
+You can explore the Flink UI:
+* Start/stop/analyse jobs (jobs menu)
+* View the output (task managers -> pick one -> stdout tab) 
 
 ## Redeployment
 
