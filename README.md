@@ -100,4 +100,12 @@ Inspect the files with `cat` or text editor.
 
 ## Cleanup
 
-Reboot! (or kill the java processes)
+Reboot! Or stop the Java processes:
+
+```shell
+# Stop all Task Managers
+./taskmanager.sh stop-all
+
+# Stop the Job Manager
+./stop-cluster.sh 
+```
