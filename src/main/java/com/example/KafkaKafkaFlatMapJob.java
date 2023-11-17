@@ -8,13 +8,9 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.formats.json.JsonDeserializationSchema;
-import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.functions.co.CoFlatMapFunction;
-import org.apache.flink.streaming.api.functions.co.KeyedCoProcessFunction;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -23,12 +19,12 @@ import java.util.Properties;
 // needs 2x connectors:
 // 1: ClickStream JSON -> demo
 // 2: Users JSON -> users
-public class KafkaKafkaJoin {
+public class KafkaKafkaFlatMapJob {
     public static void main(String[] argv) throws Exception {
         System.out.println("=====[KafkaKafkaJoin (flatmap) Job started]=====");
 
         Properties consumerConfig = new Properties();
-        try (InputStream stream = KafkaConsumer.class.getClassLoader().getResourceAsStream("consumer.properties")) {
+        try (InputStream stream = KafkaConsumerJob.class.getClassLoader().getResourceAsStream("consumer.properties")) {
             consumerConfig.load(stream);
         } catch (Exception e) {
             System.out.println("error loading consumer.properties = crash!");
@@ -36,7 +32,7 @@ public class KafkaKafkaJoin {
 
         // example of how to configure a producer
         Properties producerConfig = new Properties();
-        try (InputStream stream = KafkaConsumer.class.getClassLoader().getResourceAsStream("producer.properties")) {
+        try (InputStream stream = KafkaConsumerJob.class.getClassLoader().getResourceAsStream("producer.properties")) {
             producerConfig.load(stream);
         } catch (Exception e) {
             System.out.println("error loading producer.properties = crash!");
@@ -82,10 +78,10 @@ public class KafkaKafkaJoin {
                         .keyBy(ClickStreamEvent::getUserid, User::getUserid)
                         .flatMap(new SnipeEnricher());
 
-        enrichedStream.map(snipe -> String.format("SNIPED!" + snipe.toString()))
+        enrichedStream.map(snipe -> String.format("SNIPED via FlatMap!" + snipe.toString()))
             .print();
 
-        env.execute("kafka enrichment example");
+        env.execute("KafkaKafkaFlatMapJob");
     }
 
 }

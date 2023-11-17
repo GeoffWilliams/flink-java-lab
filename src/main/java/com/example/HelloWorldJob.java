@@ -11,6 +11,6 @@ public class HelloWorldJob {
                 .map(i -> 2 * i)
                 .print();
 
-        env.execute();
+        env.execute("HelloWorldJob");
     }
 }

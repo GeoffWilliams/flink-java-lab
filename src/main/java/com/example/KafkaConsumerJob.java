@@ -5,19 +5,18 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.formats.json.JsonDeserializationSchema;
-import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import java.io.InputStream;
 import java.util.Properties;
 
 // create a topic "demo" and setup a datagen connector using JSON (NOT JSON schema!) and "ClickStream" template
-public class KafkaConsumer {
+public class KafkaConsumerJob {
     public static void main(String[] argv) throws Exception {
         System.out.println("=====[KafkaConsumer Job started]=====");
 
         Properties consumerConfig = new Properties();
-        try (InputStream stream = KafkaConsumer.class.getClassLoader().getResourceAsStream("consumer.properties")) {
+        try (InputStream stream = KafkaConsumerJob.class.getClassLoader().getResourceAsStream("consumer.properties")) {
             consumerConfig.load(stream);
         } catch (Exception e) {
             System.out.println("error loading consumer.properties = crash!");
@@ -57,7 +56,7 @@ public class KafkaConsumer {
                 ))
                 .print();
 
-        env.execute();
+        env.execute("KafkaConsumerJob");
     }
 
 }
