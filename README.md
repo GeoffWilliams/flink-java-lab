@@ -56,6 +56,7 @@ The lab compiles a jar with a single main class. Each example Job is its own cla
 mvn clean package -DmainFlinkClass=com.example.NotAJob
 mvn clean package -DmainFlinkClass=com.example.HelloWorldJob
 mvn clean package -DmainFlinkClass=com.example.KafkaConsumer
+mvn clean package -DmainFlinkClass=com.example.KafkaKafkaJoin
 ```
 
 Argument `mainFlinkClass` sets the `main` class in the maven build at compile time and therefore the produced jar manifest.

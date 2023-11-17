@@ -19,6 +19,8 @@ public class KafkaConsumer {
         Properties consumerConfig = new Properties();
         try (InputStream stream = KafkaConsumer.class.getClassLoader().getResourceAsStream("consumer.properties")) {
             consumerConfig.load(stream);
+        } catch (Exception e) {
+            System.out.println("error loading consumer.properties = crash!");
         }
 
         // example of how to configure a producer
