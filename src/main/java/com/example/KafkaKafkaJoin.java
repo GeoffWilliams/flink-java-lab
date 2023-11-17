@@ -5,14 +5,12 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.formats.json.JsonDeserializationSchema;
-import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import java.io.InputStream;
 import java.util.Properties;
 
-// create a topic "demo" and setup a datagen connector using JSON (NOT JSON schema!) and "ClickStream" template
-public class KafkaConsumer {
+public class KafkaKafkaJoin {
     public static void main(String[] argv) throws Exception {
         System.out.println("=====[KafkaConsumer Job started]=====");
 
@@ -22,10 +20,10 @@ public class KafkaConsumer {
         }
 
         // example of how to configure a producer
-//        Properties producerConfig = new Properties();
-//        try (InputStream stream = KafkaConsumer.class.getClassLoader().getResourceAsStream("producer.properties")) {
-//            producerConfig.load(stream);
-//        }
+        Properties producerConfig = new Properties();
+        try (InputStream stream = KafkaConsumer.class.getClassLoader().getResourceAsStream("producer.properties")) {
+            producerConfig.load(stream);
+        }
 
         KafkaSource<ClickStreamEvent> demoSource = KafkaSource.<ClickStreamEvent>builder()
                 .setProperties(consumerConfig)
@@ -46,13 +44,13 @@ public class KafkaConsumer {
 
         env.fromSource(demoSource, WatermarkStrategy.noWatermarks(), "demoSource")
                 // lets make it look a bit like a web server access log
-                .map(event -> String.format("[%s] [userid: %s] %s %s %s",
-                        event.getTime(),
-                        event.getUserid(),
-                        event.getIp(),
-                        event.getRequest(),
-                        event.getAgent()
-                ))
+                .map(event -> String.format("[%s] %s %s %s",
+                                event.getTime(),
+                                event.getIp(),
+                                event.getRequest(),
+                                event.getAgent()
+                        )
+                )
                 .print();
 
         env.execute();
