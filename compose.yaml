@@ -1,0 +1,44 @@
+version: "2.2"
+services:
+  jobmanager:
+    image: flink:1.18.0-java11
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    volumes:
+      - $PWD:/project
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.bind-host: 0.0.0.0
+        taskmanager.bind-host: 0.0.0.0
+        rest.bind-address: 0.0.0.0
+        jobmanager.rpc.address: jobmanager
+        parallelism.default: 2
+
+  taskmanager:
+    image: flink:1.18.0-java11
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    scale: 3
+# Example of how to mount files into task manager
+#    volumes:
+#      - /host/path/to/job/artifacts:/opt/flink/usrlib
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        parallelism.default: 2
+
+  sql-client:
+    image: flink:1.18.0-java11
+    command: bin/sql-client.sh
+    depends_on:
+      - jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        rest.address: jobmanager

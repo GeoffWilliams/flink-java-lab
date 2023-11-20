@@ -2,7 +2,8 @@
 
 * Confluent Cloud
 * Flink Java running locally
-* WINDOWS + WSL2! (docs are for windows - Linux users you know what to do)
+* Docker or WSL2 process
+* Docs are for windows - Linux users you know what to do
 
 ## Ready to use examples
 
@@ -17,10 +18,19 @@
 * [Windows 11, WSL2, Ubuntu, Port Forwarding, Intellij - all setup already](https://github.com/GeoffWilliams/windowsnow)
 * Flink - we will just unpack the tarball and run from inside WSL2
 * [Confluent Cloud account](https://confluent.cloud)
+* To run Flink in Docker you also require Docker Desktop
 
-## Flink setup
+## Start Flink lab
 
-* All commands run inside WSL2 Ubuntu
+### Docker based
+
+```shell
+docker compose up -d
+```
+
+### Process based
+
+* All commands run inside WSL2 Ubuntu from `flink*/bin` directory
 
 ```shell
 ./install_flink.sh
@@ -33,8 +43,6 @@ jobmanager.bind-host: 0.0.0.0
 taskmanager.bind-host: 0.0.0.0
 rest.bind-address: 0.0.0.0
 ```
-
-## Start Flink!
 
 Cluster:
 
@@ -50,6 +58,8 @@ Job Manager (x3):
 ./taskmanager.sh start
 ./taskmanager.sh start
 ```
+
+## Lab Flink UI
 
 Flink UI will be available shortly: [http://localhost:8081/](http://localhost:8081/#/overview)
 
@@ -72,6 +82,23 @@ Argument `mainFlinkClass` sets the `main` class in the maven build at compile ti
 
 
 ## Run
+
+### Docker based
+
+Get a shell:
+
+```shell
+docker compose exec jobmanager bash
+```
+
+Upload the jar:
+
+```shell
+flink run /project/target/flink-java-lab-0.1.jar 
+```
+
+
+### Process based
 ```shell
 ./flink*/bin/flink run target/flink-java-lab-0.1.jar
 ```
@@ -99,6 +126,14 @@ Inspect the files with `cat` or text editor.
 * Repeat Compile and Redeployment as necessary
 
 ## Cleanup
+
+### Docker based
+
+```shell
+docker compose down
+```
+
+### Process based
 
 Reboot! Or stop the Java processes:
 
